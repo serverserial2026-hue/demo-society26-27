@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DS Elections 2026 – University of Malawi</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
+.page{display:none;min-height:100vh;flex-direction:column;position:relative}
+.page.active{display:flex}
+.bg-scene{position:fixed;inset:0;z-index:0}
+.bg-scene .layer1{position:absolute;inset:0;background:linear-gradient(145deg,#050d1e 0%,#0a1628 40%,#0c2044 80%,#071229 100%)}
+.bg-scene .orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.35;pointer-events:none}
+.bg-scene .orb1{width:600px;height:600px;top:-100px;right:-150px;background:radial-gradient(circle,#0ea5e9,transparent)}
+.bg-scene .orb2{width:500px;height:500px;bottom:-100px;left:-100px;background:radial-gradient(circle,#3b82f6,transparent)}
+.bg-scene .orb3{width:300px;height:300px;top:40%;left:40%;background:radial-gradient(circle,#6366f1,transparent);opacity:.2}
+.bg-scene .grid-overlay{position:absolute;inset:0;background-image:linear-gradient(rgba(14,165,233,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(14,165,233,.04) 1px,transparent 1px);background-size:40px 40px}
+.content-wrap{position:relative;z-index:2;flex:1;display:flex;flex-direction:column}
+nav{height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;border-bottom:1px solid rgba(255,255,255,.07);backdrop-filter:blur(20px);background:rgba(5,13,30,.6);position:sticky;top:0;z-index:100}
+.nav-brand{display:flex;align-items:center;gap:12px}
+.nav-logo{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#f59e0b,#d97706);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;color:#fff;letter-spacing:-.5px;box-shadow:0 0 20px rgba(245,158,11,.3)}
+.nav-title{font-size:1rem;font-weight:700;color:#fff}
+.nav-sub{font-size:.65rem;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:1px;margin-top:1px}
+.nav-actions{display:flex;gap:.5rem;align-items:center}
+.nbtn{padding:7px 16px;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.8);background:rgba(255,255,255,.06);transition:.2s}
+.nbtn:hover{background:rgba(255,255,255,.12);color:#fff}
+.nbtn.primary{background:linear-gradient(135deg,#f59e0b,#d97706);border-color:#d97706;color:#fff;box-shadow:0 4px 14px rgba(245,158,11,.3)}
+.hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5rem 2rem 3rem;text-align:center}
+.hero-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:20px;background:rgba(14,165,233,.12);border:1px solid rgba(14,165,233,.25);color:#7dd3fc;font-size:.75rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:2rem}
+.hero-pill span{width:6px;height:6px;border-radius:50%;background:#22c55e;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.hero h1{font-size:clamp(2rem,5vw,4rem);font-weight:900;color:#fff;line-height:1.05;margin-bottom:1rem;letter-spacing:-1px}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,#38bdf8,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{font-size:1rem;color:rgba(255,255,255,.55);max-width:520px;line-height:1.8;margin-bottom:2.5rem}
+.hero-ctas{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
+.cta-btn{padding:14px 32px;border-radius:10px;font-size:.9rem;font-weight:700;cursor:pointer;border:none;letter-spacing:.3px;transition:.25s}
+.cta-primary{background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;box-shadow:0 8px 24px rgba(14,165,233,.35)}
+.cta-primary:hover{transform:translateY(-2px)}
+.cta-ghost{background:rgba(255,255,255,.06);color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.18)}
+.cta-ghost:hover{background:rgba(255,255,255,.12)}
+.hero-stats{display:flex;gap:3rem;margin-top:3rem;flex-wrap:wrap;justify-content:center}
+.h-stat .num{font-size:2.2rem;font-weight:900;color:#fff;letter-spacing:-1px}
+.h-stat .lbl{font-size:.7rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.8px;margin-top:3px}
+.polls-wrap{padding:2rem;max-width:1160px;margin:0 auto;width:100%}
+.polls-top{text-align:center;margin-bottom:2rem}
+.polls-top h2{font-size:1.5rem;font-weight:800;color:#fff;margin-bottom:.35rem}
+.polls-top p{color:rgba(255,255,255,.5);font-size:.875rem}
+.polls-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.75rem}
+.poll-card{background:rgba(255,255,255,.97);border-radius:20px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.2);transition:.3s}
+.poll-card:hover{transform:translateY(-4px)}
+.poll-banner{width:100%;height:170px;object-fit:cover;display:block}
+.poll-banner-ph{width:100%;height:170px;background:linear-gradient(135deg,#0c2044,#0369a1 60%,#0ea5e9);display:flex;align-items:center;justify-content:center}
+.poll-banner-icon{font-size:2.8rem}
+.poll-body{padding:1.25rem}
+.poll-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:.85rem}
+.status-badge{font-size:.68rem;padding:4px 10px;border-radius:20px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.s-open{background:#dcfce7;color:#15803d}
+.s-closed{background:#fee2e2;color:#b91c1c}
+.poll-vtotal{font-size:.74rem;color:#64748b;font-weight:500}
+.poll-title-text{font-size:1rem;font-weight:800;color:#0f172a;margin-bottom:.2rem}
+.poll-desc-text{font-size:.8rem;color:#64748b;line-height:1.6;margin-bottom:1rem}
+.pos-group{border:1.5px solid #e2e8f0;border-radius:14px;overflow:hidden;margin-bottom:.85rem}
+.pos-head{padding:.55rem 1rem;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(90deg,#0f172a,#1e3a5f)}
+.pos-head-title{font-size:.75rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.6px}
+.pos-req{font-size:.68rem;color:#fbbf24;font-weight:700}
+.pos-done .pos-head{background:linear-gradient(90deg,#14532d,#166534)}
+.cands{padding:.5rem}
+.cand-row{display:flex;align-items:center;gap:.75rem;padding:.65rem .75rem;border-radius:10px;cursor:pointer;transition:.2s;border:2px solid transparent;margin-bottom:.3rem;background:#f8fafc}
+.cand-row:hover{border-color:#0ea5e9;background:#f0f9ff}
+.cand-row.picked{border-color:#0ea5e9;background:linear-gradient(135deg,#e0f2fe,#f0f9ff);box-shadow:0 2px 10px rgba(14,165,233,.15)}
+.cand-ava{width:46px;height:46px;border-radius:50%;flex-shrink:0;overflow:hidden;border:2.5px solid #e2e8f0;background:linear-gradient(135deg,#dbeafe,#bfdbfe);display:flex;align-items:center;justify-content:center;font-weight:800;color:#1d4ed8;font-size:.9rem}
+.cand-row.picked .cand-ava{border-color:#0ea5e9}
+.cand-ava img{width:100%;height:100%;object-fit:cover}
+.cand-info{flex:1;min-width:0}
+.cand-name{font-weight:700;font-size:.875rem;color:#0f172a}
+.cand-role{font-size:.72rem;color:#64748b;margin-top:1px}
+.cand-yr{font-size:.68rem;background:#e0f2fe;color:#0369a1;font-weight:700;padding:2px 7px;border-radius:4px;display:inline-block;margin-top:3px}
+.cand-bio{font-size:.7rem;color:#94a3b8;margin-top:3px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cand-tick{width:22px;height:22px;border-radius:50%;border:2px solid #e2e8f0;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.75rem;transition:.2s}
+.cand-row.picked .cand-tick{background:#0ea5e9;border-color:#0ea5e9;color:#fff}
+.vote-area{padding:.75rem 1.25rem 1.25rem}
+.prog-row{display:flex;align-items:center;gap:6px;margin-bottom:.75rem;font-size:.72rem;color:#64748b}
+.dot{width:7px;height:7px;border-radius:50%;background:#e2e8f0;flex-shrink:0}
+.dot.done{background:#22c55e}
+.vote-btn{width:100%;padding:12px;border-radius:10px;font-weight:700;font-size:.875rem;cursor:pointer;border:none;letter-spacing:.3px;transition:.2s}
+.vote-btn.active{background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;box-shadow:0 4px 16px rgba(14,165,233,.3)}
+.vote-btn.active:hover{transform:translateY(-1px)}
+.vote-btn:disabled{background:#e2e8f0;color:#94a3b8;cursor:not-allowed}
+.voted-box{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #86efac;border-radius:10px;padding:14px;text-align:center;font-size:.85rem;font-weight:700;color:#166534;line-height:1.6}
+.warn-box{background:#fef3c7;border:1px solid #fcd34d;border-radius:8px;padding:8px 12px;font-size:.77rem;font-weight:600;color:#92400e;margin-bottom:.75rem;display:none}
+.warn-box.show{display:block}
+.auth-scene{flex:1;display:flex;align-items:center;justify-content:center;padding:2rem}
+.auth-card{background:rgba(255,255,255,.98);border-radius:24px;padding:2.5rem;width:100%;max-width:420px;box-shadow:0 24px 64px rgba(0,0,0,.25)}
+.auth-logo{text-align:center;margin-bottom:1.75rem}
+.auth-ring{width:68px;height:68px;border-radius:18px;background:linear-gradient(135deg,#0ea5e9,#0284c7);display:flex;align-items:center;justify-content:center;margin:0 auto .75rem;box-shadow:0 8px 24px rgba(14,165,233,.3)}
+.auth-ring span{font-size:1.2rem;font-weight:900;color:#fff;letter-spacing:-1px}
+.auth-name{font-size:1rem;font-weight:800;color:#0f172a}
+.auth-uni{font-size:.68rem;color:#64748b;text-transform:uppercase;letter-spacing:.8px;margin-top:2px}
+.auth-card h2{font-size:1.1rem;font-weight:800;text-align:center;color:#0f172a;margin-bottom:.5rem}
+.auth-card .auth-sub{text-align:center;font-size:.8rem;color:#64748b;margin-bottom:1.25rem;line-height:1.6}
+.fgrp{margin-bottom:.85rem}
+.fgrp label{display:block;font-size:.75rem;font-weight:700;color:#334155;margin-bottom:.35rem;text-transform:uppercase;letter-spacing:.3px}
+.fgrp input,.fgrp select{width:100%;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:9px;font-size:.875rem;background:#f8fafc;color:#0f172a;outline:none;transition:.2s}
+.fgrp input:focus,.fgrp select:focus{border-color:#0ea5e9;background:#fff;box-shadow:0 0 0 3px rgba(14,165,233,.1)}
+.fgrp input.err{border-color:#ef4444;background:#fff5f5}
+.fgrp input.ok{border-color:#22c55e;background:#f0fdf4}
+.email-hint{font-size:.72rem;margin-top:.35rem;padding:6px 10px;border-radius:6px;display:none}
+.email-hint.show{display:block}
+.email-hint.bad{background:#fee2e2;color:#991b1b}
+.email-hint.good{background:#dcfce7;color:#166534}
+.auth-btn{width:100%;padding:13px;border-radius:10px;background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;border:none;font-size:.9rem;font-weight:800;cursor:pointer;letter-spacing:.3px;transition:.2s;margin-top:.5rem;box-shadow:0 4px 16px rgba(14,165,233,.3)}
+.auth-btn:hover{transform:translateY(-1px)}
+.auth-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.auth-note{text-align:center;font-size:.8rem;color:#64748b;margin-top:.85rem}
+.auth-note span{color:#0ea5e9;cursor:pointer;font-weight:700}
+.auth-err{padding:9px 13px;border-radius:8px;font-size:.8rem;font-weight:600;margin-bottom:.85rem;display:none}
+.auth-err.e{background:#fee2e2;color:#991b1b;display:block}
+footer{text-align:center;padding:1.25rem 2rem;color:rgba(255,255,255,.3);font-size:.75rem;background:rgba(0,0,0,.2);border-top:1px solid rgba(255,255,255,.06)}
+footer strong{color:#fbbf24}
+.sys-ref{color:rgba(255,255,255,.04);font-size:.55rem;user-select:none}
+.toast{position:fixed;bottom:1.75rem;right:1.75rem;padding:11px 18px;border-radius:12px;font-size:.84rem;font-weight:600;z-index:9999;opacity:0;pointer-events:none;transition:.3s;max-width:300px;box-shadow:0 8px 28px rgba(0,0,0,.25);border-left:3px solid #0ea5e9;background:#0f172a;color:#e2e8f0}
+.toast.show{opacity:1}
+.loading-overlay{position:fixed;inset:0;background:rgba(5,13,30,.85);z-index:9998;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
+.loading-overlay.hidden{display:none}
+.spinner{width:44px;height:44px;border:4px solid rgba(14,165,233,.2);border-top-color:#0ea5e9;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-overlay p{color:#7dd3fc;font-size:.9rem;font-weight:600}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block;margin-right:6px;animation:pulse 2s infinite}
+.adm-layout{display:grid;grid-template-columns:240px 1fr;min-height:100vh;background:#070d1a}
+.adm-side{background:#0d1525;border-right:1px solid #1a2540;display:flex;flex-direction:column}
+.adm-side-top{padding:1.5rem;border-bottom:1px solid #1a2540}
+.adm-side-top .atitle{font-size:1rem;font-weight:900;color:#fbbf24}
+.adm-side-top .asub{font-size:.65rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-top:3px;line-height:1.5}
+.adm-nav{flex:1;padding:.5rem 0}
+.adm-nav-item{display:flex;align-items:center;gap:.75rem;padding:.7rem 1.25rem;color:#94a3b8;cursor:pointer;transition:.2s;border-left:3px solid transparent;font-size:.85rem}
+.adm-nav-item:hover{background:rgba(14,165,233,.06);color:#7dd3fc}
+.adm-nav-item.on{background:rgba(14,165,233,.1);color:#0ea5e9;border-left-color:#0ea5e9;font-weight:700}
+.adm-nav-item .ico{font-size:.95rem;width:18px;text-align:center;flex-shrink:0}
+.adm-foot{padding:1rem 1.25rem;border-top:1px solid #1a2540}
+.adm-main{padding:2rem;overflow-y:auto;color:#cbd5e1}
+.adm-panel{display:none}
+.adm-panel.on{display:block}
+.adm-ph{margin-bottom:1.75rem}
+.adm-ph h1{font-size:1.35rem;font-weight:800;color:#f1f5f9}
+.adm-ph p{font-size:.83rem;color:#94a3b8;margin-top:.3rem}
+.stat-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:1rem;margin-bottom:2rem}
+.sc{background:#0d1525;border:1px solid #1a2540;border-radius:14px;padding:1.2rem;position:relative;overflow:hidden}
+.sc::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#0ea5e9,#6366f1)}
+.sc .sv{font-size:2rem;font-weight:900;color:#0ea5e9}
+.sc .sl{font-size:.72rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.4px;margin-top:.3rem}
+.adm-box{background:#0d1525;border:1px solid #1a2540;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem}
+.adm-box h3{font-size:.9rem;font-weight:700;color:#f1f5f9;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+.poll-row{background:#070d1a;border:1px solid #1a2540;border-radius:10px;padding:1rem;display:flex;align-items:center;gap:.85rem;margin-bottom:.75rem}
+.poll-row .pt{flex:1;font-weight:600;font-size:.875rem;color:#e2e8f0}
+.adm-btn{padding:6px 14px;border-radius:7px;font-size:.78rem;font-weight:700;cursor:pointer;border:none;transition:.2s}
+.adm-btn.blue{background:rgba(14,165,233,.15);color:#38bdf8}
+.adm-btn.red{background:rgba(239,68,68,.15);color:#f87171}
+.adm-btn.green{background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;padding:9px 20px;border-radius:9px;font-size:.84rem}
+.adm-btn:hover{opacity:.8}
+.trend-bar{display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem}
+.trend-nm{width:140px;font-size:.82rem;color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0}
+.trend-track{flex:1;background:rgba(255,255,255,.05);border-radius:4px;height:22px;overflow:hidden;border:1px solid #1a2540}
+.trend-fill{height:100%;background:linear-gradient(90deg,#0ea5e9,#6366f1);border-radius:3px;display:flex;align-items:center;padding-left:7px;font-size:.7rem;color:#fff;font-weight:700;transition:width .8s;min-width:2px}
+.trend-pct{width:38px;text-align:right;font-size:.8rem;color:#0ea5e9;font-weight:700}
+.member-card{background:#070d1a;border:1px solid #1a2540;border-radius:12px;padding:1rem;display:flex;align-items:center;gap:1rem;margin-bottom:.75rem}
+.m-ava{width:52px;height:52px;border-radius:50%;flex-shrink:0;overflow:hidden;border:2px solid #1e3a5f;background:linear-gradient(135deg,#1e3a5f,#0ea5e9);display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:.9rem}
+.m-ava img{width:100%;height:100%;object-fit:cover}
+.m-info{flex:1;min-width:0}
+.m-name{font-weight:700;font-size:.9rem;color:#e2e8f0}
+.m-pos{font-size:.75rem;color:#38bdf8;margin-top:2px;font-weight:600}
+.m-yr{font-size:.7rem;color:#94a3b8;margin-top:2px}
+.m-bio{font-size:.72rem;color:#94a3b8;margin-top:4px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;display:flex;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto}
+.modal{background:#fff;border-radius:20px;width:100%;max-width:600px;padding:2rem;margin:auto;max-height:90vh;overflow-y:auto}
+.modal h2{font-size:1.1rem;font-weight:800;color:#0f172a;margin-bottom:1.5rem}
+.modal-row{display:flex;gap:.5rem;margin-bottom:.85rem}
+.modal-row .fgrp{flex:1;margin-bottom:0}
+.modal-actions{display:flex;gap:.75rem;justify-content:flex-end;margin-top:1.5rem}
+.m-cancel{background:#f1f5f9;color:#475569;border:none;padding:9px 20px;border-radius:8px;cursor:pointer;font-weight:600}
+.m-save{background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;border:none;padding:9px 24px;border-radius:8px;cursor:pointer;font-weight:700}
+.cand-edit-row{display:flex;gap:.6rem;align-items:center;margin-bottom:.6rem;background:#f8fafc;padding:.75rem;border-radius:10px;border:1.5px solid #e2e8f0}
+.cand-edit-row input{padding:7px 10px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:.82rem;outline:none;transition:.2s}
+.cand-edit-row input:focus{border-color:#0ea5e9}
+.cand-edit-row input.n{flex:2}.cand-edit-row input.y{flex:1;min-width:80px}.cand-edit-row input.b{flex:3}
+.photo-edit{width:44px;height:44px;border-radius:50%;cursor:pointer;background:#e2e8f0;display:flex;align-items:center;justify-content:center;font-size:.6rem;color:#64748b;flex-shrink:0;overflow:hidden;border:2px dashed #94a3b8;transition:.2s;text-align:center}
+.photo-edit:hover{border-color:#0ea5e9}
+.rem-btn{background:#fee2e2;color:#dc2626;border:none;border-radius:6px;padding:6px 8px;cursor:pointer;font-size:.8rem;flex-shrink:0}
+.upload-lbl{display:block;border:2px dashed rgba(14,165,233,.35);border-radius:10px;padding:.875rem;text-align:center;cursor:pointer;color:#0284c7;font-size:.82rem;background:rgba(14,165,233,.03)}
+.upload-lbl:hover{background:rgba(14,165,233,.07);border-color:#0ea5e9}
+.section-div{font-size:.8rem;font-weight:700;color:#334155;text-transform:uppercase;letter-spacing:.4px;margin:1.25rem 0 .75rem;padding-bottom:.4rem;border-bottom:1.5px solid #e2e8f0}
+.mem-photo-wrap{display:flex;flex-direction:column;align-items:center;gap:.75rem;margin-bottom:1.25rem}
+.mem-photo-circle{width:88px;height:88px;border-radius:50%;overflow:hidden;border:3px solid #e2e8f0;background:linear-gradient(135deg,#dbeafe,#bfdbfe);display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:800;color:#1d4ed8;cursor:pointer}
+.mem-photo-circle:hover{border-color:#0ea5e9}
+.mem-photo-circle img{width:100%;height:100%;object-fit:cover}
+.adm-input{width:100%;padding:8px 12px;background:rgba(255,255,255,.05);color:#e2e8f0;border:1px solid #1a2540;border-radius:8px;font-size:.875rem;outline:none;transition:.2s}
+.adm-input:focus{border-color:#0ea5e9}
+.adm-lbl{display:block;font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.3px;margin-bottom:.35rem}
+.parti-wrap{padding:2rem;max-width:1000px;margin:0 auto;width:100%}
+.parti-top{text-align:center;margin-bottom:2rem}
+.parti-top h2{font-size:1.5rem;font-weight:800;color:#fff;margin-bottom:.35rem}
+.parti-top p{color:rgba(255,255,255,.5);font-size:.875rem}
+.parti-filter{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;margin-bottom:1.75rem}
+.pfbtn{padding:7px 18px;border-radius:20px;font-size:.8rem;font-weight:700;cursor:pointer;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);background:rgba(255,255,255,.06);transition:.2s}
+.pfbtn:hover,.pfbtn.on{background:rgba(14,165,233,.2);border-color:#0ea5e9;color:#7dd3fc}
+.parti-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.25rem}
+.pcard{background:rgba(255,255,255,.97);border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.15);transition:.3s}
+.pcard:hover{transform:translateY(-3px)}
+.pcard-photo{width:100%;height:160px;object-fit:cover;display:block}
+.pcard-photo-ph{width:100%;height:160px;background:linear-gradient(135deg,#0c2044,#0369a1);display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-weight:900;color:#fff}
+.pcard-body{padding:1rem}
+.pcard-name{font-size:.9rem;font-weight:800;color:#0f172a;margin-bottom:3px}
+.pcard-pos{font-size:.75rem;font-weight:700;color:#0284c7;margin-bottom:3px}
+.pcard-yr{font-size:.7rem;color:#64748b}
+.pcard-bio{font-size:.72rem;color:#94a3b8;margin-top:.5rem;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.dev-row{display:flex;align-items:center;gap:.75rem;padding:.6rem .75rem;background:#070d1a;border:1px solid #1a2540;border-radius:8px;margin-bottom:.5rem}
+.dev-row .did{color:#38bdf8;font-size:.84rem;flex:1;font-family:monospace}
+.key-display{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:10px;padding:.85rem 1rem;margin-bottom:1rem;display:flex;align-items:center;gap:.75rem}
+.key-val{flex:1;font-family:monospace;color:#fbbf24;font-size:.9rem;letter-spacing:2px}
+.key-mask{filter:blur(5px);user-select:none;transition:.3s}
+.db-code{background:#070d1a;border:1px solid #1a2540;border-radius:8px;padding:.75rem;font-family:monospace;font-size:.72rem;color:#94a3b8;max-height:200px;overflow-y:auto;word-break:break-all;line-height:1.6;margin:.5rem 0}
+.info-banner{background:rgba(14,165,233,.1);border:1px solid rgba(14,165,233,.25);border-radius:10px;padding:.85rem 1rem;font-size:.82rem;color:#7dd3fc;margin-bottom:1.25rem;line-height:1.6}
+</style>
+</head>
+<body>
+<!-- ── GOOGLE SHEETS SETUP BANNER ──────────────────────────────── -->
+<div id="sheets-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9997;background:linear-gradient(90deg,#0c2044,#0369a1);padding:12px 20px;align-items:center;gap:12px;flex-wrap:wrap;border-top:2px solid #0ea5e9;box-shadow:0 -4px 24px rgba(14,165,233,.3)">
+  <span style="font-size:1.1rem">📊</span>
+  <span style="color:#fff;font-size:.84rem;font-weight:600;flex:1;min-width:200px">Connect to Google Sheets so all votes sync live across every device.</span>
+  <input id="sheets-url-input" placeholder="Paste your Apps Script Web App URL here…" style="flex:2;min-width:260px;padding:8px 12px;border-radius:8px;border:1.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;font-size:.82rem;outline:none" onfocus="this.style.borderColor='#38bdf8'" onblur="this.style.borderColor='rgba(255,255,255,.3)'">
+  <button onclick="connectSheets()" style="padding:8px 18px;border-radius:8px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;font-weight:700;font-size:.82rem;cursor:pointer;white-space:nowrap">Connect ⚡</button>
+  <button onclick="document.getElementById('sheets-banner').style.display='none'" style="padding:8px 12px;border-radius:8px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.2);font-size:.8rem;cursor:pointer">Later</button>
+</div>
+
+<div class="bg-scene">
+  <div class="layer1"></div><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div><div class="grid-overlay"></div>
+</div>
+<div class="toast" id="toast"></div>
+<div class="loading-overlay hidden" id="loader"><div class="spinner"></div><p id="loader-msg">Loading...</p></div>
+
+<!-- HOME -->
+<div class="page active" id="pg-home">
+  <div class="content-wrap">
+    <nav>
+      <div class="nav-brand"><div class="nav-logo">DS</div><div><div class="nav-title">Demography Society</div><div class="nav-sub">University of Malawi · Official Elections</div></div></div>
+      <div class="nav-actions">
+        <button class="nbtn" onclick="go('pg-participants')">Candidates</button>
+        <button class="nbtn" onclick="go('pg-polls')">Vote</button>
+        <button class="nbtn" onclick="go('pg-login')">Login</button>
+        <button class="nbtn primary" onclick="go('pg-register')">Register</button>
+      </div>
+    </nav>
+    <div class="hero">
+      <div class="hero-pill"><span></span>Elections Now Open</div>
+      <h1>University of Malawi<br><em>Demography Society</em><br>Elections 2026</h1>
+      <p class="hero-desc">Exercise your democratic right. Vote for the next generation of student leaders who will shape the future of our society.</p>
+      <div class="hero-ctas">
+        <button class="cta-btn cta-primary" onclick="go('pg-register')">Register &amp; Vote Now</button>
+        <button class="cta-btn cta-ghost" onclick="go('pg-participants')">View Candidates</button>
+      </div>
+      <div class="hero-stats">
+        <div class="h-stat"><div class="num" id="hs-p">0</div><div class="lbl">Active Polls</div></div>
+        <div class="h-stat"><div class="num" id="hs-v">0</div><div class="lbl">Registered Voters</div></div>
+        <div class="h-stat"><div class="num" id="hs-c">0</div><div class="lbl">Votes Cast</div></div>
+      </div>
+    </div>
+    <footer>Designed &amp; Developed by <strong>Mwarechy Raymond Dzuwa</strong> &amp; <strong>Pempho Joel Kamanga</strong> &nbsp;·&nbsp; UNIMA Demography Society Elections &nbsp;·&nbsp; &copy; 2026 <span class="sys-ref">ref:DSE-2601-MRD-PJK</span></footer>
+  </div>
+</div>
+
+<!-- PARTICIPANTS -->
+<div class="page" id="pg-participants">
+  <div class="content-wrap">
+    <nav><div class="nav-brand"><div class="nav-logo">DS</div><div><div class="nav-title">Demography Society</div><div class="nav-sub">Candidates</div></div></div><div class="nav-actions"><button class="nbtn" onclick="go('pg-home')">← Home</button><button class="nbtn primary" onclick="go('pg-register')">Register</button></div></nav>
+    <div class="parti-wrap">
+      <div class="parti-top"><h2>🎓 Meet the Candidates</h2><p>Official participants in the 2026 Demography Society Elections</p></div>
+      <div class="parti-filter" id="parti-filter"></div>
+      <div class="parti-grid" id="parti-grid"></div>
+    </div>
+    <footer>Designed &amp; Developed by <strong>Mwarechy Raymond Dzuwa</strong> &amp; <strong>Pempho Joel Kamanga</strong> &nbsp;·&nbsp; UNIMA Demography Society &nbsp;·&nbsp; &copy; 2026</footer>
+  </div>
+</div>
+
+<!-- POLLS -->
+<div class="page" id="pg-polls">
+  <div class="content-wrap">
+    <nav><div class="nav-brand"><div class="nav-logo">DS</div><div><div class="nav-title">Demography Society</div><div class="nav-sub">Vote</div></div></div><div class="nav-actions" id="polls-nav-acts"></div></nav>
+    <div class="polls-wrap">
+      <div class="polls-top"><h2>🗳️ Active Elections</h2><p><span class="sync-dot"></span>Shared database · all devices combined</p></div>
+      <div class="polls-grid" id="polls-grid"></div>
+    </div>
+    <footer>Platform developed for <strong>UNIMA Demography Society</strong> &nbsp;·&nbsp; &copy; 2026</footer>
+  </div>
+</div>
+
+<!-- REGISTER -->
+<div class="page" id="pg-register">
+  <div class="content-wrap">
+    <nav><div class="nav-brand"><div class="nav-logo">DS</div><div><div class="nav-title">Demography Society</div></div></div><div class="nav-actions"><button class="nbtn" onclick="go('pg-home')">← Back</button></div></nav>
+    <div class="auth-scene">
+      <div class="auth-card">
+        <div class="auth-logo">
+          <div class="auth-ring"><span>DS</span></div>
+          <div class="auth-name">UNIMA Demography Society</div>
+          <div class="auth-uni">Student Elections Portal · 2026</div>
+        </div>
+        <h2>Create Voter Account</h2>
+        <p class="auth-sub">Only <strong>@unima.ac.mw</strong> emails accepted.<br><small style="color:#94a3b8">e.g. bsoc/pps/02/22@unima.ac.mw or bsoc/03/23@unima.ac.mw</small></p>
+        <div id="reg-alert" class="auth-err"></div>
+        <div class="fgrp"><label>Full Name</label><input id="rn" placeholder="Your full name"></div>
+        <div class="fgrp">
+          <label>Institutional Email</label>
+          <input id="re" type="email" placeholder="e.g. bsoc/pps/02/22@unima.ac.mw" oninput="liveEmailCheck(this.value)">
+          <div class="email-hint" id="email-hint"></div>
+        </div>
+        <div class="fgrp"><label>Year of Study</label><select id="ry"><option value="">Select year</option><option>Year 1</option><option>Year 2</option><option>Year 3</option><option>Year 4</option><option>Postgraduate</option></select></div>
+        <div class="fgrp"><label>Password</label><input id="rp" type="password" placeholder="Create a password"></div>
+        <button class="auth-btn" id="reg-btn" onclick="doReg()">Register to Vote</button>
+        <div class="auth-note">Already registered? <span onclick="go('pg-login')">Sign In</span></div>
+      </div>
+    </div>
+    <footer>Platform developed for <strong>UNIMA Demography Society</strong> &nbsp;·&nbsp; &copy; 2026</footer>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div class="page" id="pg-login">
+  <div class="content-wrap">
+    <nav><div class="nav-brand"><div class="nav-logo">DS</div><div><div class="nav-title">Demography Society</div></div></div><div class="nav-actions"><button class="nbtn" onclick="go('pg-home')">← Back</button></div></nav>
+    <div class="auth-scene">
+      <div class="auth-card">
+        <div class="auth-logo">
+          <div class="auth-ring"><span>DS</span></div>
+          <div class="auth-name">UNIMA Demography Society</div>
+          <div class="auth-uni">Student Elections Portal · 2026</div>
+        </div>
+        <h2>Voter Sign In</h2>
+        <div id="login-alert" class="auth-err"></div>
+        <div class="fgrp"><label>Email Address</label><input id="le" type="email" placeholder="your@unima.ac.mw"></div>
+        <div class="fgrp"><label>Password</label><input id="lp" type="password" placeholder="Your password"></div>
+        <button class="auth-btn" id="login-btn" onclick="doLogin()">Sign In to Vote</button>
+        <div class="auth-note">No account? <span onclick="go('pg-register')">Register</span></div>
+        <div class="auth-note" style="margin-top:.4rem"><span onclick="go('pg-adm-login')" style="color:#64748b;font-weight:600">⚙️ Admin Access</span></div>
+      </div>
+    </div>
+    <footer>Platform developed for <strong>UNIMA Demography Society</strong> &nbsp;·&nbsp; &copy; 2026</footer>
+  </div>
+</div>
+
+<!-- ADMIN LOGIN -->
+<div class="page" id="pg-adm-login">
+  <div class="content-wrap">
+    <nav><div class="nav-brand"><div class="nav-logo" style="background:linear-gradient(135deg,#f59e0b,#d97706)">⚙️</div><div><div class="nav-title">Admin Access</div></div></div><div class="nav-actions"><button class="nbtn" onclick="go('pg-login')">← Back</button></div></nav>
+    <div class="auth-scene">
+      <div class="auth-card">
+        <div class="auth-logo">
+          <div class="auth-ring" style="background:linear-gradient(135deg,#f59e0b,#d97706)"><span>🔐</span></div>
+          <div class="auth-name">Administrator Access</div>
+          <div class="auth-uni">Restricted · Authorised Devices Only</div>
+        </div>
+        <h2>Admin Sign In</h2>
+        <div id="adm-login-alert" class="auth-err"></div>
+        <div class="fgrp"><label>Admin Secret Key</label><input id="ak" type="password" placeholder="Enter admin key"></div>
+        <div class="fgrp"><label>Device ID</label><input id="apc" placeholder="e.g. PC001"></div>
+        <button class="auth-btn" style="background:linear-gradient(135deg,#f59e0b,#d97706)" onclick="doAdmLogin()">Access Dashboard</button>
+      </div>
+    </div>
+    <footer>Platform developed for <strong>UNIMA Demography Society</strong> &nbsp;·&nbsp; &copy; 2026</footer>
+  </div>
+</div>
+
+<!-- ADMIN DASHBOARD -->
+<div class="page" id="pg-admin">
+  <div class="adm-layout">
+    <div class="adm-side">
+      <div class="adm-side-top">
+        <div class="atitle">DS Elections Admin</div>
+        <div class="asub">UNIMA Demography Society<br>Management Dashboard · 2026</div>
+      </div>
+      <div class="adm-nav">
+        <div class="adm-nav-item on" onclick="showPanel('overview')" data-p="overview"><span class="ico">📊</span>Overview</div>
+        <div class="adm-nav-item" onclick="showPanel('polls')" data-p="polls"><span class="ico">🗳️</span>Manage Polls</div>
+        <div class="adm-nav-item" onclick="showPanel('members')" data-p="members"><span class="ico">🎓</span>Participants</div>
+        <div class="adm-nav-item" onclick="showPanel('trends')" data-p="trends"><span class="ico">📈</span>Live Results</div>
+        <div class="adm-nav-item" onclick="showPanel('voters')" data-p="voters"><span class="ico">👥</span>Voters</div>
+        <div class="adm-nav-item" onclick="showPanel('database')" data-p="database"><span class="ico">🗄️</span>Database &amp; Backup</div>
+        <div class="adm-nav-item" onclick="showPanel('settings')" data-p="settings"><span class="ico">⚙️</span>Settings</div>
+      </div>
+      <div class="adm-foot">
+        <div class="adm-nav-item" style="color:#f87171" onclick="go('pg-home')"><span class="ico">🚪</span>Logout</div>
+      </div>
+    </div>
+    <div class="adm-main">
+
+      <div class="adm-panel on" id="p-overview">
+        <div class="adm-ph"><h1>📊 Dashboard Overview</h1><p><span class="sync-dot"></span>Shared database — all 5 PCs contribute to the same pool</p></div>
+        <div class="stat-cards">
+          <div class="sc"><div class="sv" id="st-po">0</div><div class="sl">Active Polls</div></div>
+          <div class="sc"><div class="sv" id="st-vt">0</div><div class="sl">Total Votes</div></div>
+          <div class="sc"><div class="sv" id="st-vr">0</div><div class="sl">Registered</div></div>
+          <div class="sc"><div class="sv" id="st-ca">0</div><div class="sl">Candidates</div></div>
+          <div class="sc"><div class="sv" id="st-mb">0</div><div class="sl">Participants</div></div>
+        </div>
+        <div class="adm-box"><h3>👑 Current Leaders</h3><div id="ov-leaders"></div></div>
+      </div>
+
+      <div class="adm-panel" id="p-polls">
+        <div class="adm-ph"><h1>🗳️ Manage Polls</h1><p>Create election polls with positions and candidates</p></div>
+        <button class="adm-btn green" onclick="openPollModal()">+ Create New Poll</button>
+        <div id="adm-poll-list" style="margin-top:1.5rem"></div>
+      </div>
+
+      <div class="adm-panel" id="p-members">
+        <div class="adm-ph"><h1>🎓 Participants Directory</h1><p>Add and manage candidate profiles</p></div>
+        <button class="adm-btn green" onclick="openMemberModal()">+ Add Participant</button>
+        <div id="member-list" style="margin-top:1.5rem"></div>
+      </div>
+
+      <div class="adm-panel" id="p-trends">
+        <div class="adm-ph"><h1>📈 Live Results</h1><p>Combined vote count from all devices — admin only</p></div>
+        <button class="adm-btn blue" style="margin-bottom:1rem" onclick="refreshAdmin()">🔄 Refresh</button>
+        <div id="trends-wrap"></div>
+      </div>
+
+      <div class="adm-panel" id="p-voters">
+        <div class="adm-ph"><h1>👥 Registered Voters</h1><p>All voter accounts across all devices</p></div>
+        <div class="adm-box" id="voters-body"></div>
+      </div>
+
+      <div class="adm-panel" id="p-database">
+        <div class="adm-ph"><h1>🗄️ Database &amp; Backup</h1><p>Shared database — combined data from all voting PCs</p></div>
+        <div class="info-banner">💡 Every vote cast on any of the 5 PCs is saved to this shared database and an email backup is automatically sent to your admin email after each vote submission.</div>
+        <div class="adm-box"><h3>📊 Live Summary</h3><div class="stat-cards" style="margin-bottom:0" id="db-summary"></div></div>
+        <div class="adm-box">
+          <h3>📤 Export &amp; Download</h3>
+          <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+            <button class="adm-btn green" onclick="exportJSON()">⬇ JSON Backup</button>
+            <button class="adm-btn blue" onclick="exportCSV()">⬇ Voters CSV</button>
+            <button class="adm-btn blue" onclick="exportResultsCSV()">⬇ Results CSV</button>
+          </div>
+        </div>
+        <div class="adm-box">
+          <h3>👁 Preview Full Report</h3>
+          <button class="adm-btn blue" onclick="previewReport()">Generate Report</button>
+          <div id="db-report-prev" style="display:none;margin-top:.75rem"><div class="db-code" id="db-report-code"></div></div>
+        </div>
+        <div class="adm-box">
+          <h3>📧 Manual Email Backup</h3>
+          <p style="font-size:.8rem;color:#94a3b8;margin-bottom:.75rem">Auto-backup fires on every vote. Use this to manually send the full report anytime.</p>
+          <button class="adm-btn green" onclick="sendBackupEmail()">📨 Send Full Report Now</button>
+        </div>
+        <div class="adm-box" style="border:1.5px solid #0ea5e9">
+          <h3>🔄 Import Votes from Email Sync</h3>
+          <p style="font-size:.8rem;color:#94a3b8;margin-bottom:.75rem">
+            Each vote from any device is emailed as a sync packet. Paste the email body (or multiple emails) below and click Import — the system will extract and merge all votes automatically.
+          </p>
+          <textarea id="sync-paste" placeholder="Paste email body/bodies here — you can paste multiple emails at once..." style="width:100%;min-height:140px;padding:10px 12px;background:#0a1220;border:1.5px solid #1a2540;border-radius:10px;color:#cbd5e1;font-size:.8rem;font-family:monospace;resize:vertical;outline:none" onfocus="this.style.borderColor='#0ea5e9'" onblur="this.style.borderColor='#1a2540'"></textarea>
+          <div style="display:flex;gap:.75rem;margin-top:.75rem;flex-wrap:wrap">
+            <button class="adm-btn green" onclick="importSyncData()">⬆ Import &amp; Merge Votes</button>
+            <button class="adm-btn blue" onclick="document.getElementById('sync-paste').value=''">Clear</button>
+          </div>
+          <div id="sync-status" style="margin-top:.75rem;font-size:.82rem;display:none"></div>
+          <div style="margin-top:1rem;padding:.75rem;background:#071020;border-radius:8px;border:1px solid #1a2540">
+            <p style="font-size:.75rem;color:#64748b;margin-bottom:.4rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px">How to collect votes from other devices:</p>
+            <ol style="font-size:.75rem;color:#94a3b8;padding-left:1.25rem;line-height:2">
+              <li>Open your Gmail at <strong style="color:#7dd3fc">demograhyelections2026@gmail.com</strong></li>
+              <li>Search for emails with subject starting <strong style="color:#7dd3fc">DSE-SYNC|</strong></li>
+              <li>Open each email, copy the full body, paste it above</li>
+              <li>You can paste many emails together — duplicates are ignored</li>
+              <li>Click <strong style="color:#4ade80">Import &amp; Merge</strong></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="adm-panel" id="p-settings">
+        <div class="adm-ph"><h1>⚙️ Settings</h1><p>Platform configuration — shared across all devices</p></div>
+        <div class="adm-box">
+          <h3>🔑 Admin Key Management</h3>
+          <div class="key-display">
+            <span style="font-size:.75rem;color:#94a3b8;flex-shrink:0">Current key:</span>
+            <span class="key-val key-mask" id="key-shown">••••••••••</span>
+            <button class="adm-btn blue" onclick="toggleKeyReveal()" id="key-reveal-btn">👁 Show</button>
+            <button class="adm-btn blue" onclick="copyKey()">📋 Copy</button>
+          </div>
+          <div style="display:flex;gap:.75rem;margin-top:.5rem">
+            <input class="adm-input" id="nk" type="password" placeholder="Enter new admin key" style="flex:1">
+            <button class="adm-btn green" onclick="changeKey()">Update Key</button>
+          </div>
+        </div>
+        <div class="adm-box">
+          <h3>💻 Authorised Devices (Max 5)</h3>
+          <div id="dev-list"></div>
+          <div style="display:flex;gap:.5rem;margin-top:.75rem">
+            <input class="adm-input" id="nd" placeholder="Device ID e.g. PC004" style="flex:1">
+            <button class="adm-btn green" onclick="addDevice()">Add</button>
+          </div>
+        </div>
+        <div class="adm-box" style="border:1.5px solid #22c55e">
+          <h3>📊 Google Sheets — Live Database</h3>
+          <p style="font-size:.8rem;color:#94a3b8;margin-bottom:1rem">Connect once. Every vote, voter registration, poll, and config change syncs to your Google Sheet in real time — visible from any device, anywhere.</p>
+          <div id="sheets-status-badge" style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;background:#071020;border:1px solid #1a2540;font-size:.75rem;color:#94a3b8;margin-bottom:1rem">
+            <span id="sheets-dot" style="width:7px;height:7px;border-radius:50%;background:#475569;display:inline-block"></span>
+            <span id="sheets-status-text">Not connected</span>
+          </div>
+          <div class="fgrp" style="margin-bottom:.75rem">
+            <label class="adm-lbl">Apps Script Web App URL</label>
+            <input class="adm-input" id="sheets-url-adm" placeholder="https://script.google.com/macros/s/…/exec" style="font-size:.78rem">
+          </div>
+          <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+            <button class="adm-btn green" onclick="saveAndTestSheets()">⚡ Save &amp; Test Connection</button>
+            <button class="adm-btn blue" onclick="pushAllToSheets()">⬆ Push All Local Data to Sheets</button>
+            <button class="adm-btn blue" onclick="pullFromSheets()">⬇ Pull Latest from Sheets</button>
+          </div>
+          <div id="sheets-cfg-status" style="margin-top:.75rem;font-size:.8rem;display:none"></div>
+          <div style="margin-top:1rem;padding:.875rem;background:#071020;border-radius:10px;border:1px solid #1a2540">
+            <p style="font-size:.75rem;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.6rem">📋 Setup Instructions (one-time, 5 min)</p>
+            <ol style="font-size:.78rem;color:#94a3b8;padding-left:1.25rem;line-height:2.1">
+              <li>Go to <a href="https://sheets.google.com" target="_blank" style="color:#38bdf8">sheets.google.com</a> → create a new spreadsheet</li>
+              <li>Click <strong style="color:#e2e8f0">Extensions → Apps Script</strong></li>
+              <li>Delete all default code, paste the <strong style="color:#fbbf24">DSE_AppsScript.gs</strong> file contents</li>
+              <li>Click <strong style="color:#e2e8f0">Deploy → New Deployment → Web App</strong></li>
+              <li>Set <em>Execute as:</em> <strong style="color:#e2e8f0">Me</strong> &amp; <em>Who has access:</em> <strong style="color:#e2e8f0">Anyone</strong></li>
+              <li>Click <strong style="color:#e2e8f0">Deploy</strong> → copy the Web App URL</li>
+              <li>Paste it in the field above and click <strong style="color:#22c55e">Save &amp; Test</strong></li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="adm-box">
+          <h3>📧 EmailJS — Auto Backup on Every Vote</h3>
+          <p style="font-size:.8rem;color:#94a3b8;margin-bottom:1rem">Configure once. Every vote submission from any device will automatically email the full report to the address below.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem">
+            <div><label class="adm-lbl">Admin Email</label><input class="adm-input" id="se" placeholder="admin@unima.ac.mw"></div>
+            <div><label class="adm-lbl">Service ID</label><input class="adm-input" id="ss" placeholder="service_xxx"></div>
+            <div><label class="adm-lbl">Template ID</label><input class="adm-input" id="st" placeholder="template_xxx"></div>
+            <div><label class="adm-lbl">Public Key</label><input class="adm-input" id="spk" placeholder="public_key"></div>
+          </div>
+          <div style="display:flex;gap:.75rem">
+            <button class="adm-btn green" onclick="saveEmailCfg()">Save Settings</button>
+            <button class="adm-btn blue" onclick="testEmail()">Send Test Email</button>
+          </div>
+          <div id="email-cfg-status" style="margin-top:.75rem;font-size:.8rem;color:#4ade80;display:none"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- POLL MODAL -->
+<div class="modal-bg" id="poll-modal" style="display:none" onclick="if(event.target===this)closePollModal()">
+  <div class="modal">
+    <h2 id="pm-title">Create Poll</h2>
+    <div class="fgrp"><label>Election Title</label><input id="pm-t" placeholder="e.g. UNIMA Demography Society Elections 2026"></div>
+    <div class="fgrp"><label>Description</label><input id="pm-d" placeholder="Brief description"></div>
+    <div class="fgrp"><label>Banner Image</label><label class="upload-lbl">📷 Upload Banner<input type="file" accept="image/*" style="display:none" onchange="handleBanner(event)"></label><div id="banner-prev" style="margin-top:.5rem"></div></div>
+    <div class="fgrp"><label>Status</label><select id="pm-s"><option value="open">Open</option><option value="closed">Closed</option></select></div>
+    <div class="section-div">Positions &amp; Candidates</div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:.75rem"><button class="adm-btn green" style="padding:6px 14px;font-size:.78rem" onclick="addPos()">+ Add Position</button></div>
+    <div id="pos-fields"></div>
+    <div class="modal-actions"><button class="m-cancel" onclick="closePollModal()">Cancel</button><button class="m-save" onclick="savePoll()">Save Poll</button></div>
+  </div>
+</div>
+
+<!-- MEMBER MODAL -->
+<div class="modal-bg" id="mem-modal" style="display:none" onclick="if(event.target===this)closeMemModal()">
+  <div class="modal" style="max-width:460px">
+    <h2 id="mm-title">Add Participant</h2>
+    <div class="mem-photo-wrap">
+      <div class="mem-photo-circle" id="mm-photo-circle" onclick="document.getElementById('mm-photo-inp').click()"><span>+</span></div>
+      <input type="file" accept="image/*" id="mm-photo-inp" style="display:none" onchange="handleMemPhoto(event)">
+      <span style="font-size:.75rem;color:#64748b">Click to upload photo</span>
+    </div>
+    <div class="modal-row">
+      <div class="fgrp"><label>Full Name *</label><input id="mm-n" placeholder="Full name"></div>
+      <div class="fgrp"><label>Year of Study</label><input id="mm-y" placeholder="e.g. Year 2"></div>
+    </div>
+    <div class="fgrp"><label>Position / Role</label><input id="mm-p" placeholder="e.g. President, Treasurer"></div>
+    <div class="fgrp"><label>Programme / Department</label><input id="mm-dept" placeholder="e.g. BSc Demography"></div>
+    <div class="fgrp"><label>Short Bio</label><textarea id="mm-b" placeholder="Brief description..." style="width:100%;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:9px;font-size:.85rem;background:#f8fafc;resize:vertical;min-height:80px;outline:none;font-family:inherit;transition:.2s" onfocus="this.style.borderColor='#0ea5e9'" onblur="this.style.borderColor='#e2e8f0'"></textarea></div>
+    <div class="modal-actions"><button class="m-cancel" onclick="closeMemModal()">Cancel</button><button class="m-save" onclick="saveMember()">Save Participant</button></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+//  GOOGLE SHEETS LIVE DATABASE
+//  Paste your Apps Script Web App URL below after deploying.
+//  All votes, voters, polls & config sync to Google Sheets in real time.
+// ═══════════════════════════════════════════════════════════════════
+let SHEETS_URL = ''; // ← PASTE YOUR WEB APP URL HERE after deploy
+
+// ── LOCAL STORAGE KEYS (local cache / fallback) ───────────────────
+const SK_POLLS   = 'dse_polls';
+const SK_VOTERS  = 'dse_voters';
+const SK_VOTES   = 'dse_votes';
+const SK_MEMBERS = 'dse_members';
+const SK_CFG     = 'dse_cfg';
+
+// ── SHEETS API HELPERS ────────────────────────────────────────────
+async function sheetsGet(action) {
+  if (!SHEETS_URL) return null;
+  try {
+    const res = await fetch(`${SHEETS_URL}?action=${action}`, { method: 'GET' });
+    const json = await res.json();
+    return json.ok ? json.data : null;
+  } catch(e) { return null; }
+}
+
+async function sheetsPost(body) {
+  if (!SHEETS_URL) return null;
+  try {
+    const res = await fetch(SHEETS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const json = await res.json();
+    return json.ok ? json.data : null;
+  } catch(e) { return null; }
+}
+
+// ── LOCAL STORAGE HELPERS (cache layer) ──────────────────────────
+async function sget(key) {
+  try {
+    if (window.storage) {
+      const r = await window.storage.get(key, true);
+      return r ? JSON.parse(r.value) : null;
+    }
+  } catch(e) {}
+  try {
+    const v = localStorage.getItem(key);
+    return v ? JSON.parse(v) : null;
+  } catch(e) { return null; }
+}
+async function sset(key, val) {
+  try {
+    if (window.storage) await window.storage.set(key, JSON.stringify(val), true);
+  } catch(e) {}
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {}
+}
+
+// ── SHEETS URL MANAGEMENT ─────────────────────────────────────────
+async function loadSheetsURL() {
+  // Priority: saved config > localStorage
+  const saved = localStorage.getItem('dse_sheets_url');
+  if (saved) SHEETS_URL = saved;
+}
+function saveSheetsURL(url) {
+  SHEETS_URL = url.trim();
+  localStorage.setItem('dse_sheets_url', SHEETS_URL);
+}
+
+// ── IN-MEMORY STATE (always synced from shared storage before writes) ─
+let DB = { polls:[], voters:[], votes:{}, members:{} };
+let CFG = { adminKey:'admin2026', devices:['PC001','PC002','PC003'], email:{e:'demograhyelections2026@gmail.com',s:'service_spm3d0f',t:'template_re2qg1c',pk:'wniByoObwB3rsN95n'} };
+let cu=null, sels={}, editPid=null, editBanner=null, editMid=null, mmPhoto=null, posCtr=0, keyRevealed=false;
+
+// ── LOAD ALL SHARED DATA ─────────────────────────────────────────────
+// Tries Google Sheets first; falls back to localStorage cache.
+async function loadDB() {
+  if (SHEETS_URL) {
+    try {
+      const remote = await sheetsGet('getAll');
+      if (remote) {
+        DB.polls   = remote.polls   || [];
+        DB.voters  = remote.voters  || [];
+        DB.votes   = remote.votes   || {};
+        DB.members = remote.members || [];
+        // Update local cache
+        await Promise.all([
+          sset(SK_POLLS,   DB.polls),
+          sset(SK_VOTERS,  DB.voters),
+          sset(SK_VOTES,   DB.votes),
+          sset(SK_MEMBERS, DB.members)
+        ]);
+        return;
+      }
+    } catch(e) {}
+  }
+  // Fallback: local cache
+  const [polls, voters, votes, members] = await Promise.all([
+    sget(SK_POLLS), sget(SK_VOTERS), sget(SK_VOTES), sget(SK_MEMBERS)
+  ]);
+  DB.polls   = polls   || [];
+  DB.voters  = voters  || [];
+  DB.votes   = votes   || {};
+  DB.members = members || [];
+}
+async function loadCFG() {
+  const c = await sget(SK_CFG);
+  if (c) {
+    CFG = c;
+    // Backfill email creds if an older saved config is missing them
+    if (!CFG.email || !CFG.email.pk) {
+      CFG.email = {e:'demograhyelections2026@gmail.com',s:'service_spm3d0f',t:'template_re2qg1c',pk:'wniByoObwB3rsN95n'};
+      await sset(SK_CFG, CFG);
+    }
+  } else {
+    // First run — push defaults (incl. email) to shared storage so every device inherits them
+    await sset(SK_CFG, CFG);
+  }
+}
+
+// ── EMAIL VALIDATION ──────────────────────────────────────────────────
+const UNIMA_PAT = /^bsoc\/.+@unima\.ac\.mw$/i;
+const EXCL_PAT  = /\/(soc|psy)\//i;
+const BLOCKED   = ['gmail.com','yahoo.com','hotmail.com','outlook.com','icloud.com','live.com','aol.com','protonmail.com','ymail.com'];
+
+function validateEmail(email) {
+  email = email.trim().toLowerCase();
+  if (!email) return {ok:false, msg:'Email is required'};
+  const dom = email.split('@')[1];
+  if (!dom) return {ok:false, msg:'Invalid email format'};
+  if (BLOCKED.includes(dom)) return {ok:false, msg:`@${dom} is not permitted. Use your UNIMA email.`};
+  if (dom !== 'unima.ac.mw') return {ok:false, msg:'Only @unima.ac.mw emails are accepted.'};
+  if (!UNIMA_PAT.test(email)) return {ok:false, msg:'Invalid format. Must start with bsoc/ and end with @unima.ac.mw'};
+  if (EXCL_PAT.test(email.split('@')[0])) return {ok:false, msg:'Emails with /soc/ or /psy/ are not eligible.'};
+  return {ok:true, msg:'✅ Valid UNIMA email'};
+}
+function liveEmailCheck(val) {
+  const h=document.getElementById('email-hint'), i=document.getElementById('re');
+  if (!val) { h.className='email-hint'; i.className=''; return; }
+  const r=validateEmail(val);
+  h.className='email-hint show '+(r.ok?'good':'bad');
+  h.textContent=r.msg; i.className=r.ok?'ok':'err';
+}
+
+// ── TOAST / LOADER ────────────────────────────────────────────────────
+const toast=(m,d=2800)=>{const el=document.getElementById('toast');el.textContent=m;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),d);};
+const showLoader=(v,msg='Loading...')=>{const l=document.getElementById('loader');l.classList.toggle('hidden',!v);document.getElementById('loader-msg').textContent=msg;};
+
+// ── BOOT ──────────────────────────────────────────────────────────────
+async function boot() {
+  showLoader(true,'Connecting to live database...');
+  await loadSheetsURL();      // load saved Sheets URL first
+  await Promise.all([loadDB(), loadCFG()]);
+  showLoader(false);
+  updateHomeStats();
+  // Show setup banner if Sheets URL not yet configured
+  if (!SHEETS_URL) showSheetsBanner();
+}
+
+function showSheetsBanner() {
+  const b = document.getElementById('sheets-banner');
+  if (b) b.style.display = 'flex';
+}
+
+// ── EMAILJS AUTO-BACKUP ───────────────────────────────────────────────
+// FIX: EmailJS v4 throws if init() is called more than once per page session.
+// We load the script once and init once, then reuse for all subsequent users.
+let _ejsInitDone = false;
+async function loadAndInitEmailJS(pk) {
+  if (!window.emailjs) {
+    try {
+      const sc = document.createElement('script');
+      sc.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
+      document.head.appendChild(sc);
+      await new Promise((res,rej) => { sc.onload=res; sc.onerror=rej; });
+    } catch(e) { return false; }
+  }
+  if (!_ejsInitDone) {
+    emailjs.init(pk);
+    _ejsInitDone = true;
+  }
+  return true;
+}
+
+async function autoEmailBackup(triggerInfo='Vote submitted') {
+  const s = CFG.email;
+  if (!s.e || !s.s || !s.t || !s.pk) return; // silently skip if not configured
+  try {
+    const ok = await loadAndInitEmailJS(s.pk);
+    if (!ok) return;
+    const report = buildReport();
+    await emailjs.send(s.s, s.t, {
+      to_email: s.e,
+      subject: `DS Elections 2026 — Auto Backup [${triggerInfo}] ${new Date().toLocaleString()}`,
+      message: report
+    });
+  } catch(e) { /* silent — don't interrupt voting flow */ }
+}
+
+async function sendBackupEmail() {
+  const s = CFG.email;
+  if (!s.e || !s.s || !s.t || !s.pk) { toast('Configure EmailJS settings first'); return; }
+  showLoader(true,'Sending report...');
+  try {
+    const ok = await loadAndInitEmailJS(s.pk);
+    if (!ok) { showLoader(false); toast('Could not load EmailJS'); return; }
+    await emailjs.send(s.s, s.t, {
+      to_email: s.e,
+      subject: `DS Elections 2026 — Manual Backup ${new Date().toLocaleString()}`,
+      message: buildReport()
+    });
+    showLoader(false);
+    toast('✅ Backup report sent to '+s.e);
+  } catch(e) { showLoader(false); toast('Email failed: '+e.message); }
+}
+
+async function testEmail() {
+  toast('Sending test email...');
+  const s = CFG.email;
+  if (!s.e || !s.s || !s.t || !s.pk) { toast('Fill in all EmailJS fields first'); return; }
+  try {
+    const ok = await loadAndInitEmailJS(s.pk);
+    if (!ok) { toast('Could not load EmailJS'); return; }
+    await emailjs.send(s.s, s.t, {
+      to_email: s.e,
+      subject: 'DS Elections 2026 — Test Email',
+      message: 'This is a test from the DS Elections system. Configuration is working correctly.'
+    });
+    toast('✅ Test email sent!');
+  } catch(e) { toast('Email failed: '+e.message); }
+}
+
+// ── NAV ───────────────────────────────────────────────────────────────
+function go(id) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='pg-polls')        { renderPolls(); renderPollsNav(); }
+  if(id==='pg-home')         updateHomeStats();
+  if(id==='pg-admin')        refreshAdmin();
+  if(id==='pg-participants') renderParticipants();
+}
+function updateHomeStats() {
+  document.getElementById('hs-p').textContent = DB.polls.filter(p=>p.status==='open').length;
+  document.getElementById('hs-v').textContent = DB.voters.length;
+  document.getElementById('hs-c').textContent = Object.values(DB.votes).reduce((a,v)=>a+Object.keys(v).length,0);
+}
+function renderPollsNav() {
+  const n=document.getElementById('polls-nav-acts');
+  n.innerHTML=cu
+    ?`<span style="color:rgba(255,255,255,.75);font-size:.84rem;font-weight:600">👋 ${cu.name.split(' ')[0]}</span><button class="nbtn" onclick="cu=null;sels={};go('pg-home')">Logout</button>`
+    :`<button class="nbtn" onclick="go('pg-home')">Home</button><button class="nbtn primary" onclick="go('pg-register')">Register</button>`;
+}
+
+// ── AUTH ──────────────────────────────────────────────────────────────
+async function doReg() {
+  const n=document.getElementById('rn').value.trim(), e=document.getElementById('re').value.trim().toLowerCase(),
+        y=document.getElementById('ry').value, p=document.getElementById('rp').value,
+        al=document.getElementById('reg-alert'), btn=document.getElementById('reg-btn');
+  al.className='auth-err';
+  if(!n||!e||!y||!p){al.className='auth-err e';al.textContent='Please fill in all fields';return;}
+  const vr=validateEmail(e);
+  if(!vr.ok){al.className='auth-err e';al.textContent=vr.msg;return;}
+  btn.disabled=true; btn.textContent='Registering…';
+  showLoader(true,'Checking shared database...');
+  // Always re-fetch voters from shared storage before registering
+  const freshVoters = (await sget(SK_VOTERS)) || [];
+  if(freshVoters.find(v=>v.email===e)) {
+    showLoader(false); btn.disabled=false; btn.textContent='Register to Vote';
+    al.className='auth-err e'; al.textContent='Email already registered on this system'; return;
+  }
+  const voter = {id:'v_'+Date.now(),name:n,email:e,pass:p,year:y,reg:new Date().toISOString()};
+  freshVoters.push(voter);
+  await sset(SK_VOTERS, freshVoters);
+  DB.voters = freshVoters;
+
+  // Sync voter registration to Google Sheets
+  if (SHEETS_URL) {
+    sheetsPost({ action: 'registerVoter', voter: { ...voter, device: navigator.userAgent.substring(0,60) } });
+  }
+
+  cu = voter;
+  sels = {};
+  showLoader(false); btn.disabled=false; btn.textContent='Register to Vote';
+  toast('Welcome, '+n+'! You can now vote.');
+  go('pg-polls');
+}
+
+async function doLogin() {
+  const e=document.getElementById('le').value.trim().toLowerCase(), p=document.getElementById('lp').value,
+        al=document.getElementById('login-alert'), btn=document.getElementById('login-btn');
+  al.className='auth-err';
+  btn.disabled=true; btn.textContent='Signing in…';
+  showLoader(true,'Verifying...');
+  // FIX: Always re-sync the full DB on login so a new user never sees the previous user's state
+  await loadDB();
+  const v = DB.voters.find(x=>x.email===e&&x.pass===p);
+  showLoader(false); btn.disabled=false; btn.textContent='Sign In to Vote';
+  if(!v){al.className='auth-err e';al.textContent='Invalid email or password';return;}
+  sels = {}; // clear any leftover candidate selections from previous user
+  cu=v; toast('Welcome back, '+v.name); go('pg-polls');
+}
+
+async function doAdmLogin() {
+  const k=document.getElementById('ak').value, pc=document.getElementById('apc').value.trim(),
+        al=document.getElementById('adm-login-alert');
+  al.className='auth-err';
+  await loadCFG();
+  if(k!==CFG.adminKey){al.className='auth-err e';al.textContent='Invalid admin key';return;}
+  if(!(CFG.devices||[]).includes(pc)){al.className='auth-err e';al.textContent='Device not authorised';return;}
+  go('pg-admin');
+}
+
+// ── PARTICIPANTS ──────────────────────────────────────────────────────
+function renderParticipants() {
+  const positions=[...new Set(DB.members.map(m=>m.position||'General'))];
+  document.getElementById('parti-filter').innerHTML=
+    `<button class="pfbtn on" onclick="filterPart('all',this)">All</button>`+
+    positions.map(p=>`<button class="pfbtn" onclick="filterPart('${p}',this)">${p}</button>`).join('');
+  renderPartGrid('all');
+}
+function filterPart(pos,btn){document.querySelectorAll('.pfbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderPartGrid(pos);}
+function renderPartGrid(pos) {
+  const grid=document.getElementById('parti-grid');
+  const mems=pos==='all'?DB.members:DB.members.filter(m=>(m.position||'General')===pos);
+  if(!mems.length){grid.innerHTML='<p style="color:rgba(255,255,255,.5);grid-column:1/-1;text-align:center;padding:3rem">No participants added yet.</p>';return;}
+  grid.innerHTML=mems.map(m=>{const i=m.name.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();return`<div class="pcard">${m.photo?`<img src="${m.photo}" class="pcard-photo">`:`<div class="pcard-photo-ph">${i}</div>`}<div class="pcard-body"><div class="pcard-name">${m.name}</div><div class="pcard-pos">${m.position||''}</div><div class="pcard-yr">${[m.year,m.dept].filter(Boolean).join(' · ')}</div>${m.bio?`<div class="pcard-bio">${m.bio}</div>`:''}</div></div>`;}).join('');
+}
+
+// ── POLLS ─────────────────────────────────────────────────────────────
+function grpByPos(cands){const g={};(cands||[]).forEach(c=>{const p=c.position||'General';if(!g[p])g[p]=[];g[p].push(c);});return g;}
+function getUserVote(pid){if(!cu)return null;return(DB.votes[pid]||{})[cu.email]||null;}
+
+async function renderPolls() {
+  showLoader(true,'Syncing votes...');
+  await loadDB();
+  showLoader(false);
+  const g=document.getElementById('polls-grid');
+  if(!DB.polls.length){g.innerHTML='<p style="color:rgba(255,255,255,.6);grid-column:1/-1;text-align:center;padding:3rem">No elections created yet.</p>';return;}
+  g.innerHTML=DB.polls.map(p=>buildPollCard(p)).join('');
+}
+
+function buildPollCard(poll) {
+  const uv=getUserVote(poll.id), voted=uv!==null;
+  const totalV=Object.keys(DB.votes[poll.id]||{}).length;
+  const banner=poll.banner?`<img src="${poll.banner}" class="poll-banner">`:`<div class="poll-banner-ph"><div class="poll-banner-icon">🎓</div></div>`;
+  const groups=grpByPos(poll.candidates), posKeys=Object.keys(groups);
+  const sel=sels[poll.id]||{};
+  let posHTML='';
+  posKeys.forEach(pos=>{
+    const cands=groups[pos], done=voted||(sel[pos]!==undefined);
+    const rows=cands.map(c=>{
+      const picked=voted?(uv[pos]===c.id):(sel[pos]===c.id);
+      const inits=c.name.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();
+      return`<div class="cand-row${picked?' picked':''}" onclick="pickCand('${poll.id}','${pos}','${c.id}')">
+        <div class="cand-ava">${c.photo?`<img src="${c.photo}">`:`${inits}`}</div>
+        <div class="cand-info">
+          <div class="cand-name">${c.name}</div>
+          <div class="cand-role">${c.position||pos}</div>
+          ${c.year?`<span class="cand-yr">${c.year}</span>`:''}
+          ${c.bio&&!voted?`<div class="cand-bio">${c.bio}</div>`:''}
+        </div>
+        <div class="cand-tick">${picked?'✓':''}</div>
+      </div>`;
+    }).join('');
+    posHTML+=`<div class="pos-group${done?' pos-done':''}"><div class="pos-head"><span class="pos-head-title">🏅 ${pos}</span><span class="pos-req">${done?(voted?'✓ Voted':'✓ Selected'):'Required'}</span></div><div class="cands">${rows}</div></div>`;
+  });
+  const dots=posKeys.map(pos=>`<div class="dot${voted||(sel[pos]!==undefined)?' done':''}"></div>`).join('');
+  const foot=poll.status==='closed'
+    ?`<button class="vote-btn" disabled>Election Closed</button>`
+    :voted
+      ?`<div class="voted-box">✅ Your vote has been successfully recorded.<br><span style="font-size:.78rem;font-weight:500;color:#166534;opacity:.8">Results will be announced by the administration.</span></div>`
+      :cu
+        ?`<div class="warn-box" id="wb-${poll.id}">⚠️ Please select a candidate for all positions</div><div class="prog-row">${dots}<span style="margin-left:4px">${Object.keys(sel).length}/${posKeys.length} positions selected</span></div><button class="vote-btn active" onclick="castVote('${poll.id}','${encodeURIComponent(JSON.stringify(posKeys))}')">Submit All Votes</button>`
+        :`<button class="vote-btn active" onclick="go('pg-login')">Login to Vote</button>`;
+  return`<div class="poll-card" id="card-${poll.id}">${banner}<div class="poll-body"><div class="poll-meta"><span class="status-badge s-${poll.status}">${poll.status==='open'?'● Open':'■ Closed'}</span><span class="poll-vtotal">${totalV} voter${totalV!==1?'s':''}</span></div><div class="poll-title-text">${poll.title}</div><div class="poll-desc-text">${poll.desc||'Cast your votes for all positions below'}</div>${posHTML}</div><div class="vote-area">${foot}</div></div>`;
+}
+
+function pickCand(pid,pos,cid) {
+  if(!cu){go('pg-login');return;}
+  if(getUserVote(pid)){toast('You already voted');return;}
+  if(DB.polls.find(p=>p.id===pid)?.status==='closed'){toast('Election is closed');return;}
+  if(!sels[pid])sels[pid]={};
+  sels[pid][pos]=cid;
+  document.getElementById('polls-grid').innerHTML=DB.polls.map(p=>buildPollCard(p)).join('');
+}
+
+async function castVote(pid, posKeysEnc) {
+  if(!cu){go('pg-login');return;}
+  const posKeys=JSON.parse(decodeURIComponent(posKeysEnc));
+  const sel=sels[pid]||{}, skipped=posKeys.filter(p=>sel[p]===undefined);
+  if(skipped.length){const wb=document.getElementById('wb-'+pid);if(wb){wb.textContent='⚠️ Select candidates for: '+skipped.join(', ');wb.classList.add('show');}return;}
+
+  showLoader(true,'Saving vote to shared database...');
+
+  // Always fetch the latest votes from shared storage first (merge from all PCs)
+  const freshVotes = (await sget(SK_VOTES)) || {};
+
+  // Check again in case another device registered this voter's vote
+  if ((freshVotes[pid]||{})[cu.email]) {
+    DB.votes = freshVotes;
+    showLoader(false);
+    toast('You have already voted on another device.');
+    delete sels[pid];
+    document.getElementById('polls-grid').innerHTML=DB.polls.map(p=>buildPollCard(p)).join('');
+    return;
+  }
+
+  // ── Write vote to Google Sheets (primary) ──
+  if (SHEETS_URL) {
+    const poll = DB.polls.find(p => p.id === pid);
+    const result = await sheetsPost({
+      action: 'submitVote',
+      voter: { id: cu.id, name: cu.name, email: cu.email, year: cu.year },
+      pollId: pid,
+      pollTitle: poll ? poll.title : '',
+      choices: sel,
+      candidates: poll ? poll.candidates : []
+    });
+    if (result && result.alreadyVoted) {
+      showLoader(false);
+      toast('You have already voted on another device.');
+      delete sels[pid];
+      await loadDB(); // re-sync
+      document.getElementById('polls-grid').innerHTML=DB.polls.map(p=>buildPollCard(p)).join('');
+      return;
+    }
+  }
+
+  // ── Also write to local cache ──
+  if(!freshVotes[pid]) freshVotes[pid]={};
+  freshVotes[pid][cu.email] = sel;
+  await sset(SK_VOTES, freshVotes);
+  DB.votes = freshVotes;
+  delete sels[pid];
+  showLoader(false);
+  toast('🎉 Vote submitted and synced to Google Sheets!');
+  document.getElementById('polls-grid').innerHTML=DB.polls.map(p=>buildPollCard(p)).join('');
+
+  // Auto-email backup — non-blocking
+  autoEmailBackup(`Vote by ${cu.email}`);
+  emailSyncPacket(cu, pid, sel);
+}
+
+// ── GOOGLE SHEETS MANAGEMENT ─────────────────────────────────────────
+
+function connectSheets() {
+  const url = document.getElementById('sheets-url-input').value.trim();
+  if (!url || !url.startsWith('https://script.google.com')) {
+    toast('Please paste a valid Apps Script Web App URL'); return;
+  }
+  saveSheetsURL(url);
+  document.getElementById('sheets-banner').style.display = 'none';
+  toast('✅ Connected! Testing…');
+  testSheetsConnection();
+}
+
+async function saveAndTestSheets() {
+  const url = document.getElementById('sheets-url-adm').value.trim();
+  if (!url) { toast('Enter the Web App URL first'); return; }
+  saveSheetsURL(url);
+  await testSheetsConnection();
+}
+
+async function testSheetsConnection() {
+  const statusEl = document.getElementById('sheets-cfg-status');
+  const dot = document.getElementById('sheets-dot');
+  const txt = document.getElementById('sheets-status-text');
+  if (statusEl) { statusEl.style.display = 'block'; statusEl.style.color = '#94a3b8'; statusEl.textContent = 'Testing connection…'; }
+  try {
+    const r = await sheetsGet('ping');
+    if (r && r.message) {
+      if (dot) { dot.style.background = '#22c55e'; }
+      if (txt) txt.textContent = '● Connected — ' + r.message;
+      if (statusEl) { statusEl.style.color = '#4ade80'; statusEl.textContent = '✅ Connected to Google Sheets! All votes will now sync in real time.'; }
+      toast('✅ Google Sheets connected!');
+      // Load URL into settings field
+      const adm = document.getElementById('sheets-url-adm');
+      if (adm) adm.value = SHEETS_URL;
+    } else {
+      throw new Error('No response from Sheets API');
+    }
+  } catch(e) {
+    if (dot) dot.style.background = '#ef4444';
+    if (txt) txt.textContent = '● Connection failed';
+    if (statusEl) { statusEl.style.color = '#f87171'; statusEl.textContent = '❌ Could not reach Sheets. Check the URL and make sure you deployed as a Web App with access: Anyone.'; }
+  }
+}
+
+async function pushAllToSheets() {
+  if (!SHEETS_URL) { toast('Connect to Google Sheets first'); return; }
+  showLoader(true, 'Pushing all data to Sheets…');
+  await loadDB();
+  await Promise.all([
+    sheetsPost({ action: 'savePolls',   polls:   DB.polls }),
+    sheetsPost({ action: 'saveMembers', members: DB.members }),
+    sheetsPost({ action: 'saveConfig',  cfg:     CFG }),
+    ...DB.voters.map(v => sheetsPost({ action: 'registerVoter', voter: v }))
+  ]);
+  // Push votes row by row
+  for (const [pollId, pollVotes] of Object.entries(DB.votes)) {
+    const poll = DB.polls.find(p => p.id === pollId);
+    for (const [email, choices] of Object.entries(pollVotes)) {
+      const voter = DB.voters.find(v => v.email === email);
+      if (voter) {
+        await sheetsPost({
+          action: 'submitVote',
+          voter: { id: voter.id, name: voter.name, email: voter.email, year: voter.year },
+          pollId, pollTitle: poll ? poll.title : '', choices,
+          candidates: poll ? poll.candidates : []
+        });
+      }
+    }
+  }
+  showLoader(false);
+  toast('✅ All local data pushed to Google Sheets!');
+}
+
+async function pullFromSheets() {
+  if (!SHEETS_URL) { toast('Connect to Google Sheets first'); return; }
+  showLoader(true, 'Pulling latest data from Sheets…');
+  await loadDB();
+  showLoader(false);
+  refreshAdmin();
+  toast('✅ Pulled latest data from Google Sheets!');
+}
+
+// Load Sheets URL into settings field when settings panel opens
+function loadSheetsCfg() {
+  const el = document.getElementById('sheets-url-adm');
+  if (el) el.value = SHEETS_URL || '';
+  if (SHEETS_URL) testSheetsConnection();
+}
+
+// ── EMAIL SYNC PACKET ─────────────────────────────────────────────────
+// Sends a compact JSON payload so the admin can import votes from any device.
+async function emailSyncPacket(voter, pollId, choices) {
+  const s = CFG.email;
+  if (!s.e || !s.s || !s.t || !s.pk) return;
+  try {
+    const ok = await loadAndInitEmailJS(s.pk);
+    if (!ok) return;
+    const packet = {
+      type: 'DSE_SYNC_VOTE',
+      version: 1,
+      ts: new Date().toISOString(),
+      voter: { id: voter.id, name: voter.name, email: voter.email, year: voter.year },
+      pollId,
+      choices,
+      deviceInfo: navigator.userAgent.substring(0, 80)
+    };
+    const json = JSON.stringify(packet);
+    await emailjs.send(s.s, s.t, {
+      to_email: s.e,
+      subject: `DSE-SYNC|${voter.email}|${pollId}|${Date.now()}`,
+      message: `=== DS ELECTIONS SYNC PACKET (DO NOT EDIT) ===\nSYNC_JSON_START\n${json}\nSYNC_JSON_END\n=== END SYNC PACKET ===`
+    });
+  } catch(e) { /* silent */ }
+}
+
+// ── EMAIL SYNC IMPORTER ──────────────────────────────────────────────
+async function importSyncData() {
+  const raw = document.getElementById('sync-paste').value;
+  const statusEl = document.getElementById('sync-status');
+  statusEl.style.display = 'block';
+  statusEl.style.color = '#94a3b8';
+  statusEl.textContent = 'Scanning for sync packets...';
+
+  // Extract all JSON blobs between the sync markers
+  const regex = /SYNC_JSON_START\s*([\s\S]*?)\s*SYNC_JSON_END/g;
+  const packets = [];
+  let match;
+  while ((match = regex.exec(raw)) !== null) {
+    try {
+      const pkt = JSON.parse(match[1].trim());
+      if (pkt.type === 'DSE_SYNC_VOTE' && pkt.voter && pkt.pollId && pkt.choices) {
+        packets.push(pkt);
+      }
+    } catch(e) {}
+  }
+
+  if (!packets.length) {
+    statusEl.style.color = '#f87171';
+    statusEl.textContent = '❌ No valid sync packets found. Make sure you pasted the full email body including the SYNC_JSON_START / SYNC_JSON_END lines.';
+    return;
+  }
+
+  statusEl.textContent = `Found ${packets.length} sync packet(s). Merging into database...`;
+  showLoader(true, 'Merging votes...');
+
+  // Re-fetch latest DB state
+  await loadDB();
+
+  let imported = 0, skipped = 0, newVoters = 0;
+
+  for (const pkt of packets) {
+    const { voter, pollId, choices } = pkt;
+
+    // Merge voter record
+    if (!DB.voters.find(v => v.email === voter.email)) {
+      DB.voters.push({ ...voter, reg: pkt.ts, imported: true });
+      newVoters++;
+    }
+
+    // Merge vote — never overwrite an existing vote
+    if (!DB.votes[pollId]) DB.votes[pollId] = {};
+    if (DB.votes[pollId][voter.email]) {
+      skipped++;
+    } else {
+      DB.votes[pollId][voter.email] = choices;
+      imported++;
+    }
+  }
+
+  // Persist merged data
+  await Promise.all([
+    sset(SK_VOTERS, DB.voters),
+    sset(SK_VOTES, DB.votes)
+  ]);
+
+  showLoader(false);
+  renderStats(); renderDBPanel(); renderVoters && renderVoters();
+
+  const msg = `✅ Done! Imported ${imported} new vote(s), ${newVoters} new voter(s). ${skipped} duplicate(s) skipped.`;
+  statusEl.style.color = '#4ade80';
+  statusEl.textContent = msg;
+  toast(msg);
+  document.getElementById('sync-paste').value = '';
+}
+
+// ── ADMIN ─────────────────────────────────────────────────────────────
+async function refreshAdmin() {
+  showLoader(true,'Refreshing shared data...');
+  await Promise.all([loadDB(), loadCFG()]);
+  showLoader(false);
+  renderStats(); renderAdmPolls(); renderMemberList(); renderDevList(); renderDBPanel(); loadEmailCfg();
+}
+function showPanel(id) {
+  document.querySelectorAll('.adm-panel').forEach(p=>p.classList.remove('on'));
+  document.getElementById('p-'+id).classList.add('on');
+  document.querySelectorAll('.adm-nav-item').forEach(n=>{n.classList.remove('on');if(n.dataset.p===id)n.classList.add('on');});
+  if(id==='trends')   renderTrends();
+  if(id==='voters')   renderVoters();
+  if(id==='members')  renderMemberList();
+  if(id==='database') {renderDBPanel();}
+  if(id==='settings'){loadEmailCfg();loadSheetsCfg();renderDevList();keyRevealed=false;document.getElementById('key-shown').textContent='••••••••••';document.getElementById('key-shown').classList.add('key-mask');document.getElementById('key-reveal-btn').textContent='👁 Show';}
+}
+function renderStats() {
+  document.getElementById('st-po').textContent=DB.polls.filter(p=>p.status==='open').length;
+  document.getElementById('st-vt').textContent=Object.values(DB.votes).reduce((a,v)=>a+Object.keys(v).length,0);
+  document.getElementById('st-vr').textContent=DB.voters.length;
+  document.getElementById('st-ca').textContent=DB.polls.reduce((a,p)=>a+(p.candidates||[]).length,0);
+  document.getElementById('st-mb').textContent=DB.members.length;
+  const lc=document.getElementById('ov-leaders'); const rows=[];
+  DB.polls.forEach(poll=>{Object.entries(grpByPos(poll.candidates)).forEach(([pos,cands])=>{const w=getWinner(poll,pos,cands);if(w)rows.push(`<div style="display:flex;align-items:center;gap:.75rem;padding:.45rem 0;border-bottom:1px solid #1a2540"><span>👑</span><span style="font-size:.85rem;color:#e2e8f0"><strong>${w.name}</strong> leads <em>${pos}</em> — ${w.votes} vote${w.votes!==1?'s':''}</span></div>`);});});
+  lc.innerHTML=rows.length?rows.join(''):'<p style="color:#94a3b8">No votes cast yet.</p>';
+}
+function getWinner(poll,pos,cands){if(!DB.votes[poll.id])return null;let max=0,winner=null;(cands||[]).forEach(c=>{const cv=Object.values(DB.votes[poll.id]).map(uv=>uv[pos]).filter(v=>v===c.id).length;if(cv>max){max=cv;winner={...c,votes:cv};}});return winner;}
+function renderAdmPolls(){const c=document.getElementById('adm-poll-list');c.innerHTML=DB.polls.length?DB.polls.map(p=>`<div class="poll-row"><span class="status-badge s-${p.status}" style="flex-shrink:0">${p.status}</span><span class="pt">${p.title}</span><span style="color:#94a3b8;font-size:.78rem;white-space:nowrap">${(p.candidates||[]).length} cands · ${Object.keys(DB.votes[p.id]||{}).length} voters</span><div style="display:flex;gap:.5rem"><button class="adm-btn blue" onclick="openPollModal('${p.id}')">Edit</button><button class="adm-btn red" onclick="deletePoll('${p.id}')">Delete</button></div></div>`).join(''):'<p style="color:#94a3b8">No polls yet.</p>';}
+function renderTrends() {
+  const c=document.getElementById('trends-wrap');
+  c.innerHTML=DB.polls.map(poll=>{
+    const sections=Object.entries(grpByPos(poll.candidates)).map(([pos,cands])=>{
+      const pv=DB.votes[poll.id]||{}, total=Object.values(pv).filter(uv=>uv[pos]).length;
+      return`<div style="margin-bottom:1.25rem"><div style="font-size:.75rem;font-weight:700;color:#fbbf24;text-transform:uppercase;letter-spacing:.4px;margin-bottom:.6rem">🏅 ${pos} · ${total} vote${total!==1?'s':''}</div>${(cands||[]).map(c=>{const cv=Object.values(pv).map(uv=>uv[pos]).filter(v=>v===c.id).length;const pct=total?Math.round(cv/total*100):0;const maxV=Math.max(0,...(cands||[]).map(x=>Object.values(pv).map(uv=>uv[pos]).filter(v=>v===x.id).length));return`<div class="trend-bar"><div class="trend-nm">${cv===maxV&&cv>0?'👑 ':''}${c.name}</div><div class="trend-track"><div class="trend-fill" style="width:${pct}%">${pct>15?pct+'%':''}</div></div><div class="trend-pct">${pct}%</div></div>`;}).join('')}</div>`;
+    }).join('');
+    return`<div class="adm-box"><h3>${poll.title}</h3>${sections}</div>`;
+  }).join('')||'<p style="color:#94a3b8">No polls yet.</p>';
+}
+function renderVoters(){document.getElementById('voters-body').innerHTML=DB.voters.length?`<table style="width:100%;border-collapse:collapse;font-size:.82rem"><thead><tr style="border-bottom:1px solid #1a2540">${['Name','Email','Year','Votes Cast'].map(h=>`<th style="padding:.5rem .75rem;color:#94a3b8;text-align:left;font-weight:600">${h}</th>`).join('')}</tr></thead><tbody>${DB.voters.map(v=>`<tr style="border-bottom:1px solid #1a2540"><td style="padding:.5rem .75rem;color:#e2e8f0">${v.name}</td><td style="padding:.5rem .75rem;color:#94a3b8">${v.email}</td><td style="padding:.5rem .75rem;color:#38bdf8">${v.year||'—'}</td><td style="padding:.5rem .75rem;color:#0ea5e9;font-weight:700">${Object.values(DB.votes).filter(pv=>pv[v.email]).length}</td></tr>`).join('')}</tbody></table>`:'<p style="color:#94a3b8">No registered voters yet.</p>';}
+
+// ── DATABASE / EXPORT ─────────────────────────────────────────────────
+function renderDBPanel(){const tv=Object.values(DB.votes).reduce((a,v)=>a+Object.keys(v).length,0);document.getElementById('db-summary').innerHTML=`<div class="sc"><div class="sv">${DB.voters.length}</div><div class="sl">Voters</div></div><div class="sc"><div class="sv">${tv}</div><div class="sl">Votes Cast</div></div><div class="sc"><div class="sv">${DB.polls.length}</div><div class="sl">Polls</div></div><div class="sc"><div class="sv">${DB.members.length}</div><div class="sl">Participants</div></div>`;}
+function exportJSON(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(DB,null,2)],{type:'application/json'}));a.download='DSE_backup_'+new Date().toISOString().slice(0,10)+'.json';a.click();toast('JSON downloaded');}
+function exportCSV(){let csv='Name,Email,Year,Votes Cast\n';DB.voters.forEach(v=>{const vc=Object.values(DB.votes).filter(pv=>pv[v.email]).length;csv+=`"${v.name}","${v.email}","${v.year||''}","${vc}"\n`;});const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='DSE_voters_'+new Date().toISOString().slice(0,10)+'.csv';a.click();toast('Voters CSV downloaded');}
+function exportResultsCSV(){let csv='Poll,Position,Candidate,Votes,Percentage\n';DB.polls.forEach(poll=>{Object.entries(grpByPos(poll.candidates)).forEach(([pos,cands])=>{const pv=DB.votes[poll.id]||{},total=Object.values(pv).filter(uv=>uv[pos]).length;(cands||[]).forEach(c=>{const cv=Object.values(pv).map(uv=>uv[pos]).filter(v=>v===c.id).length;csv+=`"${poll.title}","${pos}","${c.name}","${cv}","${total?Math.round(cv/total*100):0}%"\n`;});});});const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='DSE_results_'+new Date().toISOString().slice(0,10)+'.csv';a.click();toast('Results CSV downloaded');}
+
+function buildReport(){
+  let r=`UNIMA DEMOGRAPHY SOCIETY — ELECTIONS REPORT 2026\nGenerated: ${new Date().toLocaleString()}\nRef: DSE-2601 | Combined from all voting devices\n${'='.repeat(55)}\n\n`;
+  r+=`TOTALS\nRegistered Voters: ${DB.voters.length}\nTotal Votes Cast: ${Object.values(DB.votes).reduce((a,v)=>a+Object.keys(v).length,0)}\nParticipants/Candidates: ${DB.members.length}\n\n`;
+  DB.polls.forEach(p=>{
+    r+=`POLL: ${p.title.toUpperCase()}\nStatus: ${p.status} | Voters: ${Object.keys(DB.votes[p.id]||{}).length}\n\n`;
+    Object.entries(grpByPos(p.candidates)).forEach(([pos,cands])=>{
+      const pv=DB.votes[p.id]||{},total=Object.values(pv).filter(uv=>uv[pos]).length;
+      r+=`  ${pos.toUpperCase()} (${total} votes)\n`;
+      (cands||[]).forEach(c=>{const cv=Object.values(pv).map(uv=>uv[pos]).filter(v=>v===c.id).length;r+=`    - ${c.name}: ${cv} vote${cv!==1?'s':''} (${total?Math.round(cv/total*100):0}%)\n`;});
+      r+='\n';
+    });
+  });
+  r+=`VOTER LIST\n`;
+  DB.voters.forEach((v,i)=>{r+=`  ${i+1}. ${v.name} | ${v.email} | ${v.year||''} | Voted: ${Object.values(DB.votes).some(pv=>pv[v.email])?'Yes':'No'}\n`;});
+  return r;
+}
+function previewReport(){document.getElementById('db-report-prev').style.display='block';document.getElementById('db-report-code').textContent=buildReport();}
+
+function loadEmailCfg(){document.getElementById('se').value=CFG.email.e||'';document.getElementById('ss').value=CFG.email.s||'';document.getElementById('st').value=CFG.email.t||'';document.getElementById('spk').value=CFG.email.pk||'';}
+async function saveEmailCfg(){
+  CFG.email={e:document.getElementById('se').value.trim(),s:document.getElementById('ss').value.trim(),t:document.getElementById('st').value.trim(),pk:document.getElementById('spk').value.trim()};
+  await sset(SK_CFG,CFG);
+  const st=document.getElementById('email-cfg-status');
+  st.style.display='block';st.textContent='✅ Email settings saved — auto-backup is now active on all votes.';
+  toast('Email settings saved & synced to all devices');
+}
+
+// ── MEMBERS ───────────────────────────────────────────────────────────
+function renderMemberList(){const c=document.getElementById('member-list');c.innerHTML=DB.members.length?DB.members.map(m=>{const i=m.name.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();return`<div class="member-card"><div class="m-ava">${m.photo?`<img src="${m.photo}">`:`${i}`}</div><div class="m-info"><div class="m-name">${m.name}</div><div class="m-pos">${m.position||''}</div><div class="m-yr">${[m.year,m.dept].filter(Boolean).join(' · ')}</div>${m.bio?`<div class="m-bio">${m.bio}</div>`:''}</div><div style="display:flex;gap:.5rem;flex-shrink:0"><button class="adm-btn blue" onclick="openMemberModal('${m.id}')">Edit</button><button class="adm-btn red" onclick="deleteMember('${m.id}')">Remove</button></div></div>`;}).join(''):'<p style="color:#94a3b8">No participants added yet.</p>';}
+function openMemberModal(id=null){editMid=id;mmPhoto=null;document.getElementById('mm-title').textContent=id?'Edit Participant':'Add Participant';const circle=document.getElementById('mm-photo-circle');if(id){const m=DB.members.find(x=>x.id===id);document.getElementById('mm-n').value=m.name||'';document.getElementById('mm-y').value=m.year||'';document.getElementById('mm-p').value=m.position||'';document.getElementById('mm-dept').value=m.dept||'';document.getElementById('mm-b').value=m.bio||'';circle.innerHTML=m.photo?`<img src="${m.photo}">`:`<span>${m.name.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase()}</span>`;mmPhoto=m.photo||null;}else{['mm-n','mm-y','mm-p','mm-dept','mm-b'].forEach(i=>document.getElementById(i).value='');circle.innerHTML='<span>+</span>';mmPhoto=null;}document.getElementById('mem-modal').style.display='flex';}
+function closeMemModal(){document.getElementById('mem-modal').style.display='none';}
+function handleMemPhoto(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{mmPhoto=ev.target.result;document.getElementById('mm-photo-circle').innerHTML=`<img src="${mmPhoto}">`;};r.readAsDataURL(f);}
+async function saveMember(){const name=document.getElementById('mm-n').value.trim();if(!name){toast('Name required');return;}const mem={id:editMid||'m_'+Date.now(),name,year:document.getElementById('mm-y').value.trim(),position:document.getElementById('mm-p').value.trim(),dept:document.getElementById('mm-dept').value.trim(),bio:document.getElementById('mm-b').value.trim(),photo:mmPhoto||''};const fresh=(await sget(SK_MEMBERS))||[];if(editMid){const i=fresh.findIndex(x=>x.id===editMid);fresh[i]=mem;}else fresh.push(mem);showLoader(true,'Saving...');await sset(SK_MEMBERS,fresh);DB.members=fresh;showLoader(false);closeMemModal();renderMemberList();renderStats();toast('Participant saved!');}
+async function deleteMember(id){if(!confirm('Remove this participant?'))return;const fresh=((await sget(SK_MEMBERS))||[]).filter(m=>m.id!==id);showLoader(true,'Removing...');await sset(SK_MEMBERS,fresh);DB.members=fresh;showLoader(false);renderMemberList();renderStats();toast('Removed');}
+
+// ── POLL MODAL ────────────────────────────────────────────────────────
+function openPollModal(id=null){editPid=id;editBanner=null;posCtr=0;document.getElementById('pm-title').textContent=id?'Edit Poll':'Create Poll';document.getElementById('banner-prev').innerHTML='';document.getElementById('pos-fields').innerHTML='';if(id){const p=DB.polls.find(x=>x.id===id);document.getElementById('pm-t').value=p.title;document.getElementById('pm-d').value=p.desc||'';document.getElementById('pm-s').value=p.status;editBanner=p.banner||null;if(p.banner)document.getElementById('banner-prev').innerHTML=`<img src="${p.banner}" style="width:100%;height:70px;object-fit:cover;border-radius:8px">`;Object.entries(grpByPos(p.candidates||[])).forEach(([pos,cands])=>addPos(pos,cands));}else{document.getElementById('pm-t').value='';document.getElementById('pm-d').value='';document.getElementById('pm-s').value='open';addPos('President',[]);addPos('Vice President',[]);}document.getElementById('poll-modal').style.display='flex';}
+function closePollModal(){document.getElementById('poll-modal').style.display='none';}
+function addPos(posName='',cands=[]){const pid='pos'+posCtr++;const div=document.createElement('div');div.dataset.pid=pid;div.style.cssText='background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;padding:.875rem;margin-bottom:.75rem';div.innerHTML=`<div style="display:flex;gap:.5rem;margin-bottom:.75rem;align-items:center"><input placeholder="Position name" value="${posName}" data-f="pn" style="flex:1;padding:7px 10px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:.85rem;font-weight:700;outline:none"><button onclick="this.closest('[data-pid]').remove()" style="background:#fee2e2;color:#dc2626;border:none;border-radius:7px;padding:6px 10px;cursor:pointer;flex-shrink:0">✕</button></div><div data-cr></div><button onclick="addCandRow(this)" style="background:rgba(14,165,233,.08);color:#0284c7;border:1px dashed #0ea5e9;border-radius:7px;padding:5px 12px;cursor:pointer;font-size:.78rem;font-weight:700;margin-top:.5rem;width:100%">+ Add Candidate</button>`;if(cands.length)cands.forEach(c=>addCandRow(div.querySelector('button'),c));else{addCandRow(div.querySelector('button'));addCandRow(div.querySelector('button'));}document.getElementById('pos-fields').appendChild(div);}
+function addCandRow(btn,c=null){const posDiv=btn.closest('[data-pid]'),cr=posDiv.querySelector('[data-cr]');const cid=c?c.id:'c_'+Date.now()+'_'+Math.random().toString(36).substr(2,4);const row=document.createElement('div');row.className='cand-edit-row';row.dataset.cid=cid;row.innerHTML=`<label class="photo-edit">${c&&c.photo?`<img src="${c.photo}" style="width:100%;height:100%;object-fit:cover">`:'📷'}<input type="file" accept="image/*" style="display:none" onchange="handleCandPh(event,'${cid}')"></label><input class="n" placeholder="Full name" value="${c?c.name:''}" data-f="n"><input class="y" placeholder="Year" value="${c&&c.year?c.year:''}" data-f="y"><input class="b" placeholder="Short bio" value="${c&&c.bio?c.bio:''}" data-f="b"><button class="rem-btn" onclick="this.parentElement.remove()">✕</button>`;cr.appendChild(row);}
+function handleCandPh(e,cid){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{const el=document.querySelector(`[data-cid="${cid}"] .photo-edit`);if(el)el.innerHTML=`<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover"><input type="file" accept="image/*" style="display:none" onchange="handleCandPh(event,'${cid}')">`;};r.readAsDataURL(f);}
+function handleBanner(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{editBanner=ev.target.result;document.getElementById('banner-prev').innerHTML=`<img src="${editBanner}" style="width:100%;height:70px;object-fit:cover;border-radius:8px">`;};r.readAsDataURL(f);}
+async function savePoll(){const title=document.getElementById('pm-t').value.trim();if(!title){toast('Poll title required');return;}const candidates=[];document.querySelectorAll('#pos-fields [data-pid]').forEach(posDiv=>{const posName=posDiv.querySelector('[data-f="pn"]').value.trim()||'General';posDiv.querySelectorAll('[data-cid]').forEach(row=>{const n=row.querySelector('[data-f="n"]').value.trim(),y=row.querySelector('[data-f="y"]').value.trim(),b=row.querySelector('[data-f="b"]').value.trim(),img=row.querySelector('.photo-edit img');if(n)candidates.push({id:row.dataset.cid,name:n,position:posName,year:y,bio:b,photo:img?img.src:''});});});if(!candidates.length){toast('Add at least one candidate');return;}const poll={id:editPid||'pl_'+Date.now(),title,desc:document.getElementById('pm-d').value.trim(),status:document.getElementById('pm-s').value,candidates,banner:editBanner||'',created:new Date().toISOString()};const fresh=(await sget(SK_POLLS))||[];if(editPid){const i=fresh.findIndex(p=>p.id===editPid);fresh[i]={...fresh[i],...poll,banner:editBanner||(fresh[i]?.banner||'')};}else fresh.push(poll);showLoader(true,'Saving poll...');await sset(SK_POLLS,fresh);DB.polls=fresh;showLoader(false);closePollModal();renderAdmPolls();renderStats();toast('Poll saved!');}
+async function deletePoll(id){if(!confirm('Delete this poll?'))return;const freshP=((await sget(SK_POLLS))||[]).filter(p=>p.id!==id);const freshV=await sget(SK_VOTES)||{};delete freshV[id];showLoader(true,'Deleting...');await Promise.all([sset(SK_POLLS,freshP),sset(SK_VOTES,freshV)]);DB.polls=freshP;DB.votes=freshV;showLoader(false);renderAdmPolls();renderStats();toast('Poll deleted');}
+
+// ── SETTINGS ──────────────────────────────────────────────────────────
+function toggleKeyReveal(){keyRevealed=!keyRevealed;const el=document.getElementById('key-shown'),btn=document.getElementById('key-reveal-btn');el.textContent=keyRevealed?CFG.adminKey:'••••••••••';el.classList.toggle('key-mask',!keyRevealed);btn.textContent=keyRevealed?'🙈 Hide':'👁 Show';}
+function copyKey(){navigator.clipboard.writeText(CFG.adminKey).then(()=>toast('Copied!')).catch(()=>toast(CFG.adminKey));}
+async function changeKey(){const k=document.getElementById('nk').value.trim();if(!k){toast('Enter new key');return;}CFG.adminKey=k;await sset(SK_CFG,CFG);document.getElementById('nk').value='';keyRevealed=false;document.getElementById('key-shown').textContent='••••••••••';document.getElementById('key-shown').classList.add('key-mask');document.getElementById('key-reveal-btn').textContent='👁 Show';toast('Admin key updated & synced!');}
+function renderDevList(){document.getElementById('dev-list').innerHTML=(CFG.devices||[]).map((d,i)=>`<div class="dev-row"><span class="did">💻 ${d}</span><button class="adm-btn red" onclick="removeDev(${i})">Remove</button></div>`).join('');}
+async function addDevice(){const v=document.getElementById('nd').value.trim();if(!v)return;if((CFG.devices||[]).length>=5){toast('Max 5 devices');return;}if((CFG.devices||[]).includes(v)){toast('Already added');return;}CFG.devices=[...(CFG.devices||[]),v];await sset(SK_CFG,CFG);document.getElementById('nd').value='';renderDevList();toast('Device added!');}
+async function removeDev(i){CFG.devices.splice(i,1);await sset(SK_CFG,CFG);renderDevList();}
+
+// ── START ─────────────────────────────────────────────────────────────
+boot();
+</script>
+</body>
+</html>
